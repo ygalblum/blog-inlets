@@ -37,6 +37,11 @@ variable "route53_zone_name" {
     type = string
 }
 
+variable "server_url_subdomain" {
+    type = string
+    default = "ghost"
+}
+
 variable "letsencrypt_issuer" {
     type = string
     default = "staging"

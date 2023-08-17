@@ -12,8 +12,8 @@ data "template_file" "user_data" {
   vars = {
     token = "${random_password.token.result}"
     inlets_version = "${var.inlets_version}"
-    domain = "ghost-inlets.${data.aws_route53_zone.selected.name}"
+    domain = "${local.server_url}"
     lets_encrypt_issuer = "${var.letsencrypt_issuer}"
-    lets_encrypt_email = "webmaster@ghost-inlets.${data.aws_route53_zone.selected.name}"
+    lets_encrypt_email = "webmaster@${local.server_url}"
   }
 }

@@ -3,10 +3,13 @@ data "aws_route53_zone" "selected" {
   private_zone = false
 }
 
+locals {
+  server_url = "${var.server_url_subdomain}.${data.aws_route53_zone.selected.name}"
+}
 
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "ghost-inlets.${data.aws_route53_zone.selected.name}"
+  name    = local.server_url
   type    = "A"
   ttl     = 300
   records = [aws_instance.inlets.public_ip]
