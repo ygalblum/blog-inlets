@@ -14,7 +14,7 @@ resource "aws_instance" "inlets" {
     ami           = data.aws_ami.inlets_ami.id
     instance_type = var.inlets_instance_type
 
-    key_name = var.key_name
+    key_name = aws_key_pair.inlets_key_pair.key_name
 
     vpc_security_group_ids = [
       aws_security_group.ssh.id,

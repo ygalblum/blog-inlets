@@ -1,5 +1,6 @@
-variable "key_name" {
+variable "key_pair_name" {
   type = string
+  default = "inlets"
 }
 
 variable "inlets_ami_name" {
@@ -34,7 +35,6 @@ variable "inlets_wss_port" {
 
 variable "route53_zone_name" {
     type = string
-    default = "projects.ecosystem.sysdeseng.com."
 }
 
 variable "letsencrypt_issuer" {
