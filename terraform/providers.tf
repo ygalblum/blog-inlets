@@ -6,5 +6,14 @@ terraform {
     http = {
       source = "hashicorp/http"
     }
+    random = {
+      source = "hashicorp/random"
+    }
+    tls = {
+      source = "hashicorp/tls"
+    }
+    template = {
+      source = "hashicorp/template"
+    }
   }
 }
