@@ -25,6 +25,10 @@ The process will produce two outputs you will need in the next step
     ```bash
     terraform output -raw token
     ```
+### Troubleshooting your server
+
+As part of the provisioning process, terraform creates a key pair to allow you to connect to your server.
+Terraform will then store the private key `inlets.pem` in the terraform directory
 
 ## Run your local podman kube deployment
 
