@@ -31,9 +31,9 @@
     owner: root
     group: root
     mode: '0644'
-    loop:
-    - inlets-ghost.kube
-    - inlets-ghost.yml
+  loop:
+  - inlets-ghost.kube
+  - inlets-ghost.yml
 
 - name: Run daemon reload to make Quadlet create the service files
   ansible.builtin.systemd:
