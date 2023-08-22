@@ -4,7 +4,7 @@ WantedBy=multi-user.target
 [Container]
 Image=ghcr.io/inlets/inlets-pro:{{ inlets_version }}
 ContainerName=inlets
-Exec=http server --auto-tls --auto-tls-discovery=external --token-env=INLETS_TOKEN --letsencrypt-domain={{ letsencrypt_domain }} --letsencrypt-email={{ letsencrypt_user }}@{{ letsencrypt_domain }} --letsencrypt-issuer={{ letsencrypt_issuer }}
+Exec=http server --auto-tls --auto-tls-discovery=external --token-env=INLETS_TOKEN --letsencrypt-domain={{ lets_encrypt_domain }} --letsencrypt-email={{ lets_encrypt_user }}@{{ lets_encrypt_domain }} --letsencrypt-issuer={{ lets_encrypt_issuer }}
 PublishPort=80:80
 PublishPort=443:443
 PublishPort={{ inlets_wss_port }}:{{ inlets_wss_port }}
