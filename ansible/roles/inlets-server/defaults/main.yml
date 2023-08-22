@@ -1,0 +1,3 @@
+inlets_wss_port: 8123
+letsencrypt_user: webmaster
+letsencrypt_issuer: staging

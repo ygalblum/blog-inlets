@@ -1,0 +1,9 @@
+- name: Install packages
+  ansible.builtin.package:
+    name:
+    - podman
+
+- name: Pre-Pull the inlets-pro image
+  containers.podman.podman_image:
+    name: ghcr.io/inlets/inlets-pro
+    tag: "{{ inlets_version }}"
