@@ -10,14 +10,14 @@
       inlets_token: "{{ lookup('community.general.random_string', special=false, length=64) }}"
 
 - name: Install Inlets Server
-  hosts: inlets-server
+  hosts: inlets_server
   become: true
   roles:
   - common
   - inlets-server
 
 - name: Install Inlets Client
-  hosts: inlets-server
+  hosts: inlets_client
   become: true
   roles:
   - common

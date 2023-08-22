@@ -4,7 +4,7 @@ resource "local_file" "ansible_inventory" {
       all: {
         hosts: {},
         children: {
-          inlets-server: {
+          inlets_server: {
             hosts: {
               "${aws_instance.inlets_server.public_ip}": {
                 ansible_user: "ec2-user",
@@ -13,7 +13,7 @@ resource "local_file" "ansible_inventory" {
               }
             }
           },
-          inlets-client: {
+          inlets_client: {
             hosts: {
               "${aws_instance.inlets_client.public_ip}": {
                 ansible_user: "ec2-user",
