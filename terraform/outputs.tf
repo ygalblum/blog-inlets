@@ -1,6 +1,6 @@
 output "external_ip" {
   description = "Inlets server Public IP address"
-  value = aws_instance.inlets.public_ip
+  value = aws_instance.inlets_server.public_ip
 }
 
 output "token" {

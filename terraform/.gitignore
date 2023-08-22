@@ -4,3 +4,5 @@ terraform.tfstate*
 *.tfvars
 .terraform.tfstate.lock.info
 inlets.pem
+values.yml
+inventory.yml
