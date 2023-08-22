@@ -1,0 +1,13 @@
+- name: Install Inlets Server
+  hosts: inlets-server
+  become: true
+  roles:
+  - common
+  - inlets-server
+
+- name: Install Inlets Client
+  hosts: inlets-server
+  become: true
+  roles:
+  - common
+  - inlets-client
