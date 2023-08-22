@@ -6,19 +6,27 @@ resource "local_file" "ansible_inventory" {
         children: {
           inlets-server: {
             hosts: {
-              "${aws_instance.inlets_server.public_ip}": {}
+              "${aws_instance.inlets_server.public_ip}": {
+                ansible_user: "ec2-user",
+                ansible_ssh_private_key_file: "${path.cwd}/${var.key_pair_name}.pem",
+                ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+              }
             }
           },
           inlets-client: {
             hosts: {
-              "${aws_instance.inlets_client.public_ip}": {}
+              "${aws_instance.inlets_client.public_ip}": {
+                ansible_user: "ec2-user",
+                ansible_ssh_private_key_file: "${path.cwd}/${var.key_pair_name}.pem",
+                ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+              }
             }
           }
         }
       }
     }
   )
-  filename = "inventory.yml"
+  filename = "${path.cwd}/inventory.yml"
   file_permission = "0644"
 }
 
@@ -34,6 +42,6 @@ resource "local_file" "ansible_values" {
       lets_encrypt_email: "webmaster@${local.server_url}",
     }
   )
-  filename = "values.yml"
+  filename = "${path.cwd}/values.yml"
   file_permission = "0644"
 }
