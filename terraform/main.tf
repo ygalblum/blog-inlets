@@ -18,7 +18,6 @@ resource "aws_instance" "inlets_server" {
     root_block_device {
       volume_size = var.inlets_volume_size
     }
-    # user_data = "${data.template_file.user_data.rendered}"
 }
 
 resource "aws_instance" "inlets_client" {
