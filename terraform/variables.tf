@@ -41,7 +41,3 @@ variable "server_url_subdomain" {
     type = string
     default = "ghost"
 }
-
-variable "inlets_license" {
-    type = string
-}

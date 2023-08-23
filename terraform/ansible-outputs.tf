@@ -33,7 +33,6 @@ resource "local_file" "ansible_inventory" {
 resource "local_file" "ansible_values" {
   content = yamlencode(
     {
-      inlets_license: "${var.inlets_license}",
       lets_encrypt_domain: "${local.server_url}",
     }
   )
