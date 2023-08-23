@@ -34,7 +34,6 @@ resource "local_file" "ansible_values" {
   content = yamlencode(
     {
       inlets_license: "${var.inlets_license}",
-      inlets_server_ip: "${aws_instance.inlets_server.private_ip}",
       lets_encrypt_domain: "${local.server_url}",
     }
   )

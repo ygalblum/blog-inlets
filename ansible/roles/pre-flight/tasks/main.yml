@@ -1,3 +1,7 @@
+- name: Assert only one server
+  ansible.builtin.assert:
+    that: groups['inlets_server'] | default([]) | length == 1
+
 - name: Assert license
   ansible.builtin.assert:
     that: inlets_license | default('') | length > 0
@@ -17,3 +21,7 @@
   ansible.builtin.set_fact:
     inlets_version: "{{ default_inlets_version }}"
   when: inlets_version | default('') | length == 0
+
+- name: Set inlets server ip
+  ansible.builtin.set_fact:
+    inlets_server_ip: "{{ hostvars[groups['inlets_server'][0]]['ansible_default_ipv4'].address }}"
