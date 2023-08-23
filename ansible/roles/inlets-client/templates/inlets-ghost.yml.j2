@@ -22,7 +22,7 @@ spec:
     image: docker.io/library/ghost:5.59.0-alpine
     env:
     - name: url
-      value: https://ghost.projects.ecosystem.sysdeseng.com
+      value: https://{{ inlets_server_domain }}
     - name: NODE_ENV
       value: development
     volumeMounts:
