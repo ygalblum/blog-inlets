@@ -1,3 +1,13 @@
+- name: Assert license
+  ansible.builtin.assert:
+    that: inlets_license | default('') | length > 0
+    fail_msg: inlets_license must be defined
+
+- name: Assert domain
+  ansible.builtin.assert:
+    that: lets_encrypt_domain | default('') | length > 0
+    fail_msg:  lets_encrypt_domain must be defined
+
 - name: Generate inlets server token
   no_log: true
   ansible.builtin.set_fact:
