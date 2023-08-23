@@ -1,0 +1,45 @@
+- name: Create the podman secret for the inlets token
+  containers.podman.podman_secret:
+    name: inlets-token
+    state: present
+    skip_existing: true
+    data: |
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: inlets-token
+      data:
+        inlets-token: "{{ inlets_token | b64encode }}"
+
+- name: Create the podman secret for the inlets license
+  containers.podman.podman_secret:
+    name: inlets-license
+    state: present
+    skip_existing: true
+    data: |
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: inlets-license
+      data:
+        inlets-license: "{{ inlets_license | b64encode }}"
+
+- name: Copy the Quadlet files
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/containers/systemd/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+  - inlets-ghost.kube
+  - inlets-ghost.yml
+
+- name: Run daemon reload to make Quadlet create the service files
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Start the Inlets Server Service
+  ansible.builtin.systemd:
+    name: inlets-ghost
+    state: started

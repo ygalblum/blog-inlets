@@ -1,0 +1,39 @@
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Open Ports in firewalld
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  loop:
+  - "443/tcp"
+  - "80/tcp"
+  - "{{ inlets_wss_port }}/tcp"
+  when:
+  - services['firewalld.service'] is defined
+  - services['firewalld.service']['state'] == 'running'
+
+- name: Create the podman secret for the inlets token
+  containers.podman.podman_secret:
+    name: inlets-token
+    state: present
+    skip_existing: true
+    data: "{{ inlets_token }}"
+
+- name: Copy the Quadlet files
+  ansible.builtin.template:
+    src: inlets.container.j2
+    dest: /etc/containers/systemd/inlets.container
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Run daemon reload to make Quadlet create the service files
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Start the Inlets Server Service
+  ansible.builtin.systemd:
+    name: inlets
+    state: started

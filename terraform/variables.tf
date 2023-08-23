@@ -41,17 +41,3 @@ variable "server_url_subdomain" {
     type = string
     default = "ghost"
 }
-
-variable "letsencrypt_issuer" {
-    type = string
-    default = "staging"
-    validation {
-      condition = var.letsencrypt_issuer == "staging" || var.letsencrypt_issuer == "prod"
-      error_message = "letsencrypt_issuer can be set to either staging or prod"
-    }
-}
-
-variable "inlets_version" {
-    type = string
-    default = "0.9.20"
-}

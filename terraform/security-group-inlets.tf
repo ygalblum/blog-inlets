@@ -9,5 +9,5 @@ resource "aws_vpc_security_group_ingress_rule" "inlets_wss" {
   ip_protocol = "tcp"
   from_port = var.inlets_wss_port
   to_port = var.inlets_wss_port
-  cidr_ipv4 = local.myip_cidr
+  cidr_ipv4 = local.vpc_cidr_block
 }

@@ -12,5 +12,5 @@ resource "aws_route53_record" "www" {
   name    = local.server_url
   type    = "A"
   ttl     = 300
-  records = [aws_instance.inlets.public_ip]
+  records = [aws_instance.inlets_server.public_ip]
 }

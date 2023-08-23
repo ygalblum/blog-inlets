@@ -22,7 +22,7 @@ spec:
     image: docker.io/library/ghost:5.59.0-alpine
     env:
     - name: url
-      value: https://< FQDN Based on the parameters passed to terraform >
+      value: https://ghost.projects.ecosystem.sysdeseng.com
     - name: NODE_ENV
       value: development
     volumeMounts:
@@ -36,17 +36,17 @@ spec:
         memory: "128Mi"
         cpu: "500m"
   - name: inlets
-    image: ghcr.io/inlets/inlets-pro:0.9.20
+    image: ghcr.io/inlets/inlets-pro:{{ inlets_version }}
     args:
     - "http"
     - "client"
-    - "--url=wss://< Public IP Address of EC2 instance >:8123"
-    - "--token-file=/var/secrets/inlets-server-token/inlets-server-token"
+    - "--url=wss://{{ inlets_server_ip }}:{{ inlets_wss_port }}"
+    - "--token-file=/var/secrets/inlets-token/inlets-token"
     - "--license-file=/var/secrets/inlets-license/inlets-license"
     - "--upstream=http://127.0.0.1:2368"
     volumeMounts:
-    - mountPath: /var/secrets/inlets-server-token
-      name: inlets-server-token
+    - mountPath: /var/secrets/inlets-token
+      name: inlets-token
     - mountPath: /var/secrets/inlets-license
       name: inlets-license
     resources:
@@ -63,6 +63,6 @@ spec:
   - name: inlets-license
     secret:
       secretName: inlets-license
-  - name: inlets-server-token
+  - name: inlets-token
     secret:
-      secretName: inlets-server-token
+      secretName: inlets-token

@@ -1,0 +1,22 @@
+- name: Preflight tasks
+  hosts: all
+  become: false
+  vars:
+    default_inlets_version : 0.9.20
+  run_once: true
+  roles:
+  - pre-flight
+
+- name: Install Inlets Server
+  hosts: inlets_server
+  become: true
+  roles:
+  - common
+  - inlets-server
+
+- name: Install Inlets Client
+  hosts: inlets_client
+  become: true
+  roles:
+  - common
+  - inlets-client

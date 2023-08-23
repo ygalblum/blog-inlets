@@ -1,10 +1,4 @@
-output "external_ip" {
-  description = "Inlets server Public IP address"
-  value = aws_instance.inlets.public_ip
-}
-
-output "token" {
-  description = "Inlets server token"
-  value = random_password.token.result
-  sensitive = true
+output "server_url" {
+  description = "Inlets server FQDN"
+  value = local.server_url
 }
