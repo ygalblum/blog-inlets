@@ -42,11 +42,6 @@ variable "server_url_subdomain" {
     default = "ghost"
 }
 
-variable "inlets_version" {
-    type = string
-    default = "0.9.20"
-}
-
 variable "inlets_license" {
     type = string
 }
