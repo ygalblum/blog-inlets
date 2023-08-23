@@ -8,7 +8,7 @@ resource "local_file" "ansible_inventory" {
             hosts: {
               "${aws_instance.inlets_server.public_ip}": {
                 ansible_user: "ec2-user",
-                ansible_ssh_private_key_file: "${path.cwd}/${var.key_pair_name}.pem",
+                ansible_ssh_private_key_file: "${local_sensitive_file.ssh_key.filename}",
                 ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
               }
             }
@@ -17,7 +17,7 @@ resource "local_file" "ansible_inventory" {
             hosts: {
               "${aws_instance.inlets_client.public_ip}": {
                 ansible_user: "ec2-user",
-                ansible_ssh_private_key_file: "${path.cwd}/${var.key_pair_name}.pem",
+                ansible_ssh_private_key_file: "${local_sensitive_file.ssh_key.filename}",
                 ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
               }
             }
