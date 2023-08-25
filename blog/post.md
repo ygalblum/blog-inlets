@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Run and expose Kubernetes Pod based Applicatios using Quadlet and Inlets
+title: Run and expose Kubernetes Pod based Application using Quadlet and Inlets
 description: As a Kubernetes user, you can use the same YAML file to expose your application using Inlets
 author: Ygal Blum & Valentin Rothberg
 tags: podman quadlet containers
@@ -9,15 +9,13 @@ image: /images/2021-09-compose/writing.jpg
 date: 2023-08-23
 ---
 
-With Quadlet, you can use your Kubernetes Pod spec file directly to expose your local application on the internet using Inlets.
+[Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) is a new way of running containerized workloads in systemd with Podman. Running Podman in systemd achieves a high degree of robustness and automation since systemd can take care of the lifecycle management and monitoring of the workloads. More advanced features such as [Podman auto updates](https://docs.podman.io/en/latest/markdown/podman-auto-update.1.html) and [custom health-check actions](https://www.redhat.com/sysadmin/podman-edge-healthcheck) make Quadlet a handy tool for modern Edge Computing.
 
-This tutorial takes after the one described in Alex Ellis's [blog post](https://inlets.dev/blog/2021/09/09/compose-and-inlets.html).
-However, instead of using docker-compose, it uses Kubernetes Pod spec along with a Quadlet `.kube` file to run the Ghost application with the inlets client locally. In addition, it uses Quadlet to run the containerized version of Inlets Server as well.
+This tutorial is inspired by a previous post from Alex Ellis's on [running inlets with compose](https://inlets.dev/blog/2021/09/09/compose-and-inlets.html). But instead of Compose, we want to show how deploy inlets via Quadlet and make use of Podman's Kubernetes capabilities. Hence, we are going to run a `.kube` file via Quadlet and Podman. In addition, we'll use Quadlet to run the containerized version of Inlets Server as well.
 
 ## Accompanying Code
 
-The code that accompanies this blog post uses [Terraform](https://www.terraform.io/) to provision resources on AWS
-and [Ansible](https://www.ansible.com/) to deploy the applications. The code can be found [here](https://github.com/ygalblum/blog-inlets)
+The code that accompanies this blog post uses [Terraform](https://www.terraform.io/) to provision resources on AWS and [Ansible](https://www.ansible.com/) to deploy the applications. The code can be found [here](https://github.com/ygalblum/blog-inlets).
 
 ## Prerequisites
 
@@ -42,7 +40,7 @@ echo -n < TOKEN > | podman secret create inlets-token -
 
 ### Quadlet
 
-#### Generate the `inlets.container` file
+#### Generate the Quadlet `inlets.container` file
 1. Use the following jinja template `inlets.container.j2`:
     ```jinja
     [Install]
@@ -58,6 +56,7 @@ echo -n < TOKEN > | podman secret create inlets-token -
     AddCapability=NET_BIND_SERVICE
     Secret=inlets-token,type=env,target=INLETS_TOKEN
     ```
+    You may notice that the structure of the above Quadlet file looks like an ordinary systemd unit. And that's exactly it! Quadlet is an extension of the systemd-unit syntax and adds a number of new tables to it. The `[Container]` table for single-container workloads and the `[Kube]` table for running Kubernetes workloads. There are also tables for volumes, networks and secrets. Feel free to refer to the [man page](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) for details.
 
 2. Create the `data.json` file
     ```json
@@ -72,11 +71,13 @@ echo -n < TOKEN > | podman secret create inlets-token -
     ```
 
 #### Create and run the Quadlet
+To install a Quadlet, it must be placed at specific location (see [docs](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)). Then, you can reload the systemd service or user session, and you are ready to go. Since we are running the workload as root, we need to place the Quadlet in `/etc`.
+
 1. Copy the `inlets.container` file to `/etc/containers/systemd`
     ``` bash
     sudo cp inlets.container /etc/containers/systemd
     ```
-2. Reload the systemd deamon
+2. Reload the systemd daemon
     ```bash
     sudo systemctl daemon-reload
     ```
@@ -87,7 +88,7 @@ echo -n < TOKEN > | podman secret create inlets-token -
 
 ## Running GHost along with Inlets client
 
-You can run Ghost on your local computer, a Raspberry Pi, or an additinal EC2 instance.
+You can run Ghost on your local computer, a Raspberry Pi, or an additional EC2 instance.
 
 ### Secrets
 
@@ -237,7 +238,7 @@ Yaml=inlets-ghost.yml
     ``` bash
     sudo cp inlets-ghost.yaml inlets-ghost.kube /etc/containers/systemd
     ```
-2. Reload the systemd deamon
+2. Reload the systemd daemon
     ```bash
     sudo systemctl daemon-reload
     ```
