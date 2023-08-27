@@ -246,3 +246,9 @@ Yaml=inlets-ghost.yml
     ```bash
     sudo systemctl start inlets-ghost.service
     ```
+
+## Access the blog
+
+Once all resources are up and running you can access you blog at your at `https://< inlets_server_domain >`
+
+To create your admin account, add `/ghost` to the end of the URL.
